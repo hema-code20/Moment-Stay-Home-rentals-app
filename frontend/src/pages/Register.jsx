@@ -24,7 +24,6 @@ const Register = () => {
 
     try {
       const register_form = new FormData();
-
       for (const key in formData) {
         if (formData[key] !== null) {
           register_form.append(key, formData[key]);
@@ -38,13 +37,17 @@ const Register = () => {
         body: register_form,
       });
 
+      const result = await response.json(); // Assuming server returns JSON
+
       if (response.ok) {
         navigate("/login");
+      } else if (result.error && result.error === "User already exists") {
+        window.alert("User already exists. Please use a different email or username.");
       } else {
-        console.log("Server error:", await response.text());
+        window.alert("Server error: " + result.message);
       }
     } catch (err) {
-      console.log("Registration failed:", err.message);
+      window.alert("Registration failed: " + err.message);
     }
   };
 
@@ -64,16 +67,16 @@ const Register = () => {
           />
 
           <label htmlFor="image">
-            <img src="/assets/images.png" alt="Profile Photo" />
-          </label>
-
-          {formData.profileImage && (
             <img
-              src={URL.createObjectURL(formData.profileImage)}
-              alt="avatar"
-              style={{ maxWidth: "80px" }}
+              src={
+                formData.profileImage
+                  ? URL.createObjectURL(formData.profileImage)
+                  : "/assets/images.png"
+              }
+              alt="Profile Photo"
+              style={{ maxWidth: "80px", cursor: "pointer" }}
             />
-          )}
+          </label>
 
           <input
             name="username"
@@ -98,7 +101,7 @@ const Register = () => {
             onChange={handleChange}
             required
           />
-          <button type="submit"> Sign Up </button>
+          <button type="submit">Sign Up</button>
         </form>
         <p>
           Have an account?{" "}
