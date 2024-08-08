@@ -1,8 +1,13 @@
-const mongoose = require("mongoose");
+
+const mongoose = require("mongoose")
 
 const UserSchema = new mongoose.Schema(
   {
-    username: {
+    firstName: {
+      type: String,
+      required: true,
+    },
+    lastName: {
       type: String,
       required: true,
     },
@@ -19,7 +24,7 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-    trips: {
+    tripList: {
       type: Array,
       default: [],
     },
@@ -34,10 +39,10 @@ const UserSchema = new mongoose.Schema(
     reservationList: {
       type: Array,
       default: [],
-    },
+    }
   },
-  { timeStamps: true }
-);
+  { timestamps: true }
+)
 
-const User = mongoose.model("User", UserSchema);
-module.exports = User;
+const User = mongoose.model("User", UserSchema)
+module.exports = User

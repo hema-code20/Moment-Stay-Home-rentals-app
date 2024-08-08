@@ -1,4 +1,5 @@
-import { TbMountain, TbPool } from "react-icons/tb";
+
+import { TbBeach, TbMountain, TbPool } from "react-icons/tb";
 import {
   GiBarn,
   GiBoatFishing,
@@ -52,7 +53,7 @@ export const categories = [
   {
     img: "assets/beach_cat.jpg",
     label: "Beachfront",
-    icon: <FaUmbrellaBeach />,
+    icon: <TbBeach />,
     description: "This property is close to the beach!",
   },
   {

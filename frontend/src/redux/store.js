@@ -1,4 +1,5 @@
-import { configureStore } from '@reduxjs/toolkit';
+
+import { configureStore } from "@reduxjs/toolkit";
 import {
   persistStore,
   persistReducer,
@@ -8,17 +9,17 @@ import {
   PERSIST,
   PURGE,
   REGISTER,
-} from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
-import userReducer from './state'; // Adjust path as needed
+} from "redux-persist";
+import storage from "redux-persist/lib/storage";
+import state from "./state";
 
 const persistConfig = {
-  key: 'root',
+  key: "root",
   version: 1,
   storage,
 };
 
-const persistedReducer = persistReducer(persistConfig, userReducer);
+const persistedReducer = persistReducer(persistConfig, state);
 
 export const store = configureStore({
   reducer: persistedReducer,
@@ -30,4 +31,4 @@ export const store = configureStore({
     }),
 });
 
-export const persistor = persistStore(store);
+export let persistor = persistStore(store);

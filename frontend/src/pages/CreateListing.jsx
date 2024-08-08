@@ -1,17 +1,23 @@
+
+import "../styles/CreateListing.scss";
 import Navbar from "../components/Navbar";
 import { categories, types, facilities } from "../data";
+
 import { RemoveCircleOutline, AddCircleOutline } from "@mui/icons-material";
+import variables from "../styles/variables.scss";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { IoIosImages } from "react-icons/io";
 import { useState } from "react";
 import { BiTrash } from "react-icons/bi";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Footer from "../components/Footer"
 
 const CreateListing = () => {
-  const [category, setCategory] = usestate("");
+  const [category, setCategory] = useState("");
   const [type, setType] = useState("");
 
+  /* LOCATION */
   const [formLocation, setFormLocation] = useState({
     streetAddress: "",
     aptSuite: "",
@@ -28,16 +34,18 @@ const CreateListing = () => {
     });
   };
 
+  /* BASIC COUNTS */
   const [guestCount, setGuestCount] = useState(1);
   const [bedroomCount, setBedroomCount] = useState(1);
   const [bedCount, setBedCount] = useState(1);
   const [bathroomCount, setBathroomCount] = useState(1);
 
+  /* AMENITIES */
   const [amenities, setAmenities] = useState([]);
 
   const handleSelectAmenities = (facility) => {
     if (amenities.includes(facility)) {
-      setAmenities.filter((prevAmenities) =>
+      setAmenities((prevAmenities) =>
         prevAmenities.filter((option) => option !== facility)
       );
     } else {
@@ -45,6 +53,7 @@ const CreateListing = () => {
     }
   };
 
+  /* UPLOAD, DRAG & DROP, REMOVE PHOTOS */
   const [photos, setPhotos] = useState([]);
 
   const handleUploadPhotos = (e) => {
@@ -68,6 +77,7 @@ const CreateListing = () => {
     );
   };
 
+  /* DESCRIPTION */
   const [formDescription, setFormDescription] = useState({
     title: "",
     description: "",
@@ -92,6 +102,7 @@ const CreateListing = () => {
     e.preventDefault();
 
     try {
+      /* Create a new FormData onject to handle file uploads */
       const listingForm = new FormData();
       listingForm.append("creator", creatorId);
       listingForm.append("category", category);
@@ -117,6 +128,7 @@ const CreateListing = () => {
         listingForm.append("listingPhotos", photo);
       });
 
+      /* Send a POST request to server */
       const response = await fetch("http://localhost:3001/properties/create", {
         method: "POST",
         body: listingForm,
@@ -126,10 +138,9 @@ const CreateListing = () => {
         navigate("/");
       }
     } catch (err) {
-      console.log("Publish Listing failed !!", err.message);
+      console.log("Publish Listing failed", err.message);
     }
   };
-
   return (
     <>
       <Navbar />

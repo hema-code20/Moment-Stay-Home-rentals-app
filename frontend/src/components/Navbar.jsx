@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { setLogout } from "../redux/state";
+import '../styles/Navbar.scss';
 
 const Navbar = () => {
   const [dropdownMenu, setDropdownMenu] = useState(false);
@@ -41,7 +42,7 @@ const Navbar = () => {
             </Link>
           ) : (
             <Link to="/login" className="host">
-              Become A Host
+              Host your Property
             </Link>
           )}
 
@@ -66,8 +67,8 @@ const Navbar = () => {
 
           {dropdownMenu && !user && (
             <div className="navbar_right_accountmenu">
-              <Link to="/login">Sign In</Link>
-              <Link to="/register">Sign Up</Link>
+              <Link to="/register">Register</Link>
+              <Link to="/login">Login</Link>
             </div>
           )}
 
@@ -77,7 +78,7 @@ const Navbar = () => {
               <Link to={`/${user._id}/wishList`}>Wish List</Link>
               <Link to={`/${user._id}/properties`}>Property List</Link>
               <Link to={`/${user._id}/reservations`}>Reservation List</Link>
-              <Link to="/create-listing">Become A Host</Link>
+              <Link to="/create-listing">Host your Property</Link>
               <Link
                 to="/login"
                 onClick={() => {
@@ -126,7 +127,7 @@ const Navbar = () => {
         </div>
 
         <IconButton
-        className="search-button"
+          className="search-button"
           disabled={!(where && checkIn && checkOut)}
           onClick={handleSearch}
         >

@@ -1,11 +1,15 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"
+import "../styles/Register.scss";
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    username: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
+    confirmPassword: "",
     profileImage: null,
   });
 
@@ -13,49 +17,89 @@ const Register = () => {
     const { name, value, files } = e.target;
     setFormData({
       ...formData,
+      [name]: value,
       [name]: name === "profileImage" ? files[0] : value,
     });
   };
 
-  const navigate = useNavigate();
+  const [passwordMatch, setPasswordMatch] = useState(true)
+
+  useEffect(() => {
+    setPasswordMatch(formData.password === formData.confirmPassword || formData.confirmPassword === "")
+  })
+
+  const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     try {
-      const register_form = new FormData();
-      for (const key in formData) {
-        if (formData[key] !== null) {
-          register_form.append(key, formData[key]);
-        }
-      }
+      const register_form = new FormData()
 
-      console.log("FormData contents:", ...register_form.entries());
+      for (var key in formData) {
+        register_form.append(key, formData[key])
+      }
 
       const response = await fetch("http://localhost:3001/auth/register", {
         method: "POST",
-        body: register_form,
-      });
-
-      const result = await response.json(); // Assuming server returns JSON
+        body: register_form
+      })
 
       if (response.ok) {
-        navigate("/login");
-      } else if (result.error && result.error === "User already exists") {
-        window.alert("User already exists. Please use a different email or username.");
-      } else {
-        window.alert("Server error: " + result.message);
+        navigate("/login")
       }
     } catch (err) {
-      window.alert("Registration failed: " + err.message);
+      console.log("Registration failed", err.message)
     }
-  };
+  }
 
   return (
     <div className="register">
       <div className="register_content">
         <form className="register_content_form" onSubmit={handleSubmit}>
-          <h1>Sign Up</h1>
+          <input
+            placeholder="First Name"
+            name="firstName"
+            value={formData.firstName}
+            onChange={handleChange}
+            required
+          />
+          <input
+            placeholder="Last Name"
+            name="lastName"
+            value={formData.lastName}
+            onChange={handleChange}
+            required
+          />
+          <input
+            placeholder="Email"
+            name="email"
+            type="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+          <input
+            placeholder="Password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            type="password"
+            required
+          />
+          <input
+            placeholder="Confirm Password"
+            name="confirmPassword"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            type="password"
+            required
+          />
+
+          {!passwordMatch && (
+            <p style={{ color: "red" }}>Passwords are not matched!</p>
+          )}
+
           <input
             id="image"
             type="file"
@@ -65,50 +109,21 @@ const Register = () => {
             onChange={handleChange}
             required
           />
-
           <label htmlFor="image">
-            <img
-              src={
-                formData.profileImage
-                  ? URL.createObjectURL(formData.profileImage)
-                  : "/assets/images.png"
-              }
-              alt="Profile Photo"
-              style={{ maxWidth: "80px", cursor: "pointer" }}
-            />
+            <img src="/assets/addImage.png" alt="add profile photo" />
+            <p>Upload Your Photo</p>
           </label>
 
-          <input
-            name="username"
-            placeholder="Username"
-            value={formData.username}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-          <button type="submit">Sign Up</button>
+          {formData.profileImage && (
+            <img
+              src={URL.createObjectURL(formData.profileImage)}
+              alt="profile photo"
+              style={{ maxWidth: "80px" }}
+            />
+          )}
+          <button type="submit" disabled={!passwordMatch}>REGISTER</button>
         </form>
-        <p>
-          Have an account?{" "}
-          <a href="/login">
-            <span style={{ color: "blue" }}>Sign in</span>
-          </a>
-        </p>
+        <a href="/login">Already have an account? Log In Here</a>
       </div>
     </div>
   );

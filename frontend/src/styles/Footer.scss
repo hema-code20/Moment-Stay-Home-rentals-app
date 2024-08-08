@@ -1,0 +1,99 @@
+
+/*FOOTER*/
+$breakpoints: (
+  "sm": 480px,
+  "mm": 580px,
+  "md": 720px,
+  "ml": 820px,
+  "lg": 1000px,
+  "xl": 1120px,
+);
+
+@mixin shadow {
+  box-shadow: 0 3px 10px 2px rgba(0, 0, 0, 0.2);
+}
+
+@mixin buttonStyle {
+  padding: 10px 15px;
+  background-color: #004369;
+  border: none;
+  font-size: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s ease;
+  color: white;
+  border-radius: 10px;
+}
+
+@mixin sm {
+  @media (max-width: map-get($breakpoints, "sm")) {
+    @content;
+  }
+}
+
+@mixin mm {
+  @media (max-width: map-get($breakpoints, "mm")) {
+    @content;
+  }
+}
+
+@mixin md {
+  @media (max-width: map-get($breakpoints, "md")) {
+    @content;
+  }
+}
+
+@mixin ml {
+  @media (max-width: map-get($breakpoints, "ml")) {
+    @content;
+  }
+}
+
+@mixin lg {
+  @media (max-width: map-get($breakpoints, "lg")) {
+    @content;
+  }
+}
+
+@mixin xl {
+  @media (max-width: map-get($breakpoints, "xl")) {
+    @content;
+  }
+}
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #abadb0;
+  }
+  
+  .footer_center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .footer_center ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 25px;
+    cursor: pointer;
+  }
+  
+  .footer_center p {
+    margin: 0;
+  }
+  
+  .footer_right {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .footer_right img {
+    cursor: pointer;
+    margin-right: 5%;
+    width: 20%;
+    height: 20%;
+  }
